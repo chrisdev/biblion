@@ -7,4 +7,4 @@ to add the following
 
  * A Markdown parser with support for image references
  * Support for django-markitup in admin
- * Admin thumbsnails
+ * Admin thumbnails
