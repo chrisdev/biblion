@@ -16,6 +16,7 @@ setup(
     packages = [
         "biblion",
         "biblion.templatetags",
+        "biblion.urls",
     ],
     package_data = {
         "biblion": [
