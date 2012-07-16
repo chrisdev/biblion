@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.functional import curry
 
-from biblion.models import Blog, Post, Image
+from biblion.models import Blog, Post, Image,Section
 from biblion.forms import AdminPostForm
 from biblion.utils import can_tweet
 
@@ -64,5 +64,6 @@ class BlogAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Image)
+admin.site.register(Section)
 admin.site.register(Blog, BlogAdmin)
 

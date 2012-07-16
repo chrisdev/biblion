@@ -8,7 +8,10 @@ from django.utils.functional import curry
 from biblion.models import Blog, Image, Post, Revision
 from biblion.settings import PARSER
 from biblion.utils import can_tweet, load_path_attr
-
+try:
+  from markitup.widgets import AdminMarkItUpWidget as content_widget
+except ImportError:
+   content_widget=forms.Textarea
 
 class BlogForm(forms.ModelForm):
     
@@ -135,14 +138,10 @@ class AdminPostForm(forms.ModelForm):
         )
     )
     teaser = forms.CharField(
-        widget = forms.Textarea(
-            attrs = {"style": "width: 80%;"},
-        ),
+        widget = content_widget
     )
     content = forms.CharField(
-        widget = forms.Textarea(
-            attrs = {"style": "width: 80%; height: 300px;"},
-        )
+        widget = content_widget
     )
     publish = forms.BooleanField(
         required = False,
