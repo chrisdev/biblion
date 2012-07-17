@@ -208,24 +208,30 @@ def serialize_request(request):
     return json.dumps(data)
 
 
-def blog_feed(request, blog_slug, slug=None):
-    
+def blog_feed(request, blog_slug, section_slug=None):
+    print blog_slug,section_slug
     blog = get_object_or_404(Blog, slug=blog_slug)
     
-    if slug:
+    if section_slug:
         section = get_object_or_404(Section, slug=slug)
         posts = blog.posts.filter(section=section)
     else:
-        section = Section.objects.get(slug="all")
-        posts = blog.posts()
+        #section = Section.objects.get(slug="all")
+        posts = blog.posts.all()
     
     current_site = Site.objects.get_current()
+    if section_slug:
+        feed_title = "%s Blog: %s %s" % (current_site.name, section.blog.title.upper(), section.name)
+    else:
+        feed_title = "%s Blog: %s %s" % (current_site.name, blog.title.upper(), "All")
     
-    feed_title = "%s Blog: %s" % (current_site.name, section.blog.title.upper() + section.name)
-    
-    blog_url = "http://%s%s" % (current_site.domain, reverse("blog"))
-    
-    url_name, kwargs = "blog_feed", {"section": section.slug}
+    blog_url = "http://%s%s" % (current_site.domain, reverse("blog",args=[blog_slug]))
+    if section_slug:
+        url_name, kwargs = blog_feed, {"section_slug": section.slug,
+                                         "blog_slug":blog.slug}
+    else:
+        url_name, kwargs = blog_feed, {"blog_slug":blog.slug}        
+
     feed_url = "http://%s%s" % (current_site.domain, reverse(url_name, kwargs=kwargs))
     
     if posts:
